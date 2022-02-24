@@ -286,11 +286,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\Heroku\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
+      "projectUniqueName": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\HerokuGit\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
       "projectName": "FormalMethodsAPI",
-      "projectPath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\Heroku\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
+      "projectPath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\HerokuGit\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
       "packagesPath": "C:\\Users\\timde\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\Heroku\\FormalMethodsAPI\\FormalMethodsAPI\\obj\\",
+      "outputPath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\HerokuGit\\FormalMethodsAPI\\FormalMethodsAPI\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "luHtpE3zjfiOO8hAOBROONi5oLnAJRH9tbu0FOwdNLM5/f/YD8pEI/2wSW0XYsukKg5TtezbmRBisAiDg6UJyg==",
+  "dgSpecHash": "Plt/ApKvqOgc/JaUU23bbXEJeemN63gWMx98XX3GWL9xKKQr2rPIdHO6VooysV+GQrtb8ZEoKkbALFhVnao0FA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\Heroku\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
+  "projectFilePath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\HerokuGit\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\timde\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",

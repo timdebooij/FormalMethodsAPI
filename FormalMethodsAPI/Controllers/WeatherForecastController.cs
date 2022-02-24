@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace FormalMethodsAPI.Controllers
 {
@@ -31,7 +32,9 @@ namespace FormalMethodsAPI.Controllers
             {
                 var rng = new Random();
                 Calculator c = new Calculator();
-                return c.getString();
+                return "(While tapping on the shoulder) Madam, Madam, Madam. " +
+                    "I have a survey. When do you want to eat?";
+                    //c.getString();
                 /*return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
                     Summary = c.getString()
