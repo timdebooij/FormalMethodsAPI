@@ -1,4 +1,5 @@
 ﻿using FormalMethodsAPI.Back_end.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -13,6 +14,7 @@ namespace FormalMethodsAPI.Controllers
     [ApiController]
     public class Networkcontroller : ControllerBase
     {
+        [EnableCors]
         [HttpGet]
         //public IEnumerable<WeatherForecast> Get()
         public string Get(string input)
