@@ -56,3 +56,4 @@ C:\Users\timde\School\Periode 3.4\Formele Methode\HerokuGit\FormalMethodsAPI\For
 C:\Users\timde\School\Periode 3.4\Formele Methode\HerokuGit\FormalMethodsAPI\FormalMethodsAPI\obj\Debug\net5.0\ref\FormalMethodsAPI.dll
 C:\Users\timde\School\Periode 3.4\Formele Methode\HerokuGit\FormalMethodsAPI\FormalMethodsAPI\obj\Debug\net5.0\FormalMethodsAPI.pdb
 C:\Users\timde\School\Periode 3.4\Formele Methode\HerokuGit\FormalMethodsAPI\FormalMethodsAPI\obj\Debug\net5.0\FormalMethodsAPI.genruntimeconfig.cache
+C:\Users\timde\School\Periode 3.4\Formele Methode\HerokuGit\FormalMethodsAPI\FormalMethodsAPI\bin\Debug\net5.0\Newtonsoft.Json.dll

@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "Plt/ApKvqOgc/JaUU23bbXEJeemN63gWMx98XX3GWL9xKKQr2rPIdHO6VooysV+GQrtb8ZEoKkbALFhVnao0FA==",
+  "dgSpecHash": "EZCMS+TFdIIPVpUOyT+V6CUQQN3asD/M6yonGShkIGTp0dq1/7RbBqszEARj1jZRZoMbaHoww7E06ljgT33ilw==",
   "success": true,
   "projectFilePath": "C:\\Users\\timde\\School\\Periode 3.4\\Formele Methode\\HerokuGit\\FormalMethodsAPI\\FormalMethodsAPI\\FormalMethodsAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\timde\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.10.14\\microsoft.visualstudio.azure.containers.tools.targets.1.10.14.nupkg.sha512",
+    "C:\\Users\\timde\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
     "C:\\Users\\timde\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",

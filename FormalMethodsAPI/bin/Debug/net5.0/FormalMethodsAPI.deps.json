@@ -34,6 +34,7 @@
       "FormalMethodsAPI/1.0.0": {
         "dependencies": {
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.10.14",
+          "Newtonsoft.Json": "13.0.1",
           "Swashbuckle.AspNetCore": "5.6.3",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
@@ -339,6 +340,17 @@
         }
       },
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.10.14": {},
+      "Newtonsoft.Json/13.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.25517"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
       "Swashbuckle.AspNetCore/5.6.3": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "3.0.0",
@@ -2112,6 +2124,13 @@
       "sha512": "sha512-vjweoaSTnMiJY4Ts4/9xHt3vStk36q8FRXxvwqSx7YjdXTbQE0i/JxncHeL6vsdE1+4sn6of2/eLQeGZ43eL2Q==",
       "path": "microsoft.visualstudio.azure.containers.tools.targets/1.10.14",
       "hashPath": "microsoft.visualstudio.azure.containers.tools.targets.1.10.14.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "path": "newtonsoft.json/13.0.1",
+      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/5.6.3": {
       "type": "package",
