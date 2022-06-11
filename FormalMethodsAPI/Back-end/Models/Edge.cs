@@ -9,10 +9,10 @@ namespace FormalMethodsAPI.Back_end.Models
     {
         public int from;
         public int to;
-        public char label;
+        public string label;
         public string arrows;
 
-        public Edge(int from, int to, char label)
+        public Edge(int from, int to, string label)
         {
             this.from = from;
             this.to = to;

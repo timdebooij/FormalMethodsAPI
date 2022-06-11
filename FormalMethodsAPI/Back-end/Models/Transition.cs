@@ -7,10 +7,10 @@ namespace FormalMethodsAPI.Back_end.Models
 {
     public class Transition
     {
-        public static char EPSILON = '$';
+        public static string EPSILON = "$";
 
         private string fromState;
-        private char symbol;
+        private string symbol;
         private string toState;
 
         /**
@@ -29,7 +29,7 @@ namespace FormalMethodsAPI.Back_end.Models
         }
 
 
-        public Transition(string from, char s, string to)
+        public Transition(string from, string s, string to)
         {
             this.fromState = from;
             this.symbol = s;
@@ -47,7 +47,7 @@ namespace FormalMethodsAPI.Back_end.Models
             return toState;
         }
 
-        public char getSymbol()
+        public string getSymbol()
         {
             return symbol;
         }

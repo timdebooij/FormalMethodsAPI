@@ -9,11 +9,13 @@ namespace FormalMethodsAPI.Back_end.Models
     {
         public int id;
         public string label;
+        public Color color;
 
-        public Node(int id, string label)
+        public Node(int id, string label, Color color)
         {
             this.id = id;
             this.label = label;
+            this.color = color;
         }
     }
 }

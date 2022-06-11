@@ -14,7 +14,7 @@ namespace FormalMethodsAPI.Controllers
     [ApiController]
     public class RegExpController : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("{input}")]
         //public IEnumerable<WeatherForecast> Get()
         public string Get(string input)
         {
@@ -22,16 +22,20 @@ namespace FormalMethodsAPI.Controllers
             {
                 return "False data";
             }
+            input = input.Replace('@', '+');
             RegularExpression exp = RegularExpression.generate(input);
             RegExpData data = new RegExpData();
             data.expression = input;
             data.language = exp.getLanguage(5).ToList();
             data.size = data.language.Count;
             data.message = "Succesfully send an expression";
+            data.nonLanguage = RegularExpression.GetRandomWord(exp, RegularExpression.getAlphabet(input));
             Console.WriteLine(data.language);
 
             string jsonString = JsonSerializer.Serialize(data);
             return jsonString;
         }
+
+        
     }
 }

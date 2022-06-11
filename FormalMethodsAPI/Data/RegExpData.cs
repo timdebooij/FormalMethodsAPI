@@ -12,5 +12,6 @@ namespace FormalMethodsAPI.Data
         public string expression { get; set; }
         public int size { get; set; }
         public List<string> language { get; set; }
+        public List<string> nonLanguage { get; set; }
     }
 }
