@@ -27,6 +27,20 @@ namespace FormalMethodsAPI.Back_end.Models
             return ids;
         }
 
+        public static void ResetDatabase()
+        {
+            Automatas = new Dictionary<int, Automata>();
+            getAutomatas();
+            name = 0;
+            newStates = new List<NewState>();
+            transStates = new List<NewState>();
+            nextId = 200;
+            nextCompId = 600;
+            nextMinimisedId = 900;
+            nextName = 0;
+            nameIndex = 0;
+        }
+
         public static List<int> getDfaIds()
         {
             List<int> ids = new List<int>();

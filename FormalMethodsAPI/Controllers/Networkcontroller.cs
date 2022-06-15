@@ -221,6 +221,13 @@ namespace FormalMethodsAPI.Controllers
             }
         }
 
+        [HttpGet("reset")]
+        public string ResetApi()
+        {
+            Database.ResetDatabase();
+            return "Database succesfully reset";
+        }
+
         [HttpGet("construct/{id}/{start}/{contain}/{end}")]
         public string ConstructNetwork(int id, string start, string contain, string end)
         {
