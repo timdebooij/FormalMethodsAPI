@@ -105,6 +105,14 @@ namespace FormalMethodsAPI.Back_end.Models
                 }
             }
 
+            foreach(Transition t in transitions)
+            {
+                if(t.getSymbol() == "$")
+                {
+                    isDFA = false;
+                }
+            }
+
             return isDFA;
         }
 
@@ -419,5 +427,277 @@ namespace FormalMethodsAPI.Back_end.Models
                 return Tuple.Create(NewState.getState(Database.newStates, states), newStates);
             }
         }
+
+        static public List<State> GetEpsilonClosure(string state, Automata Ndfa)
+        {
+            List<State> closureStates = new List<State>();
+            if (Ndfa.getNextStates("$", state).Count != 0)
+            {
+                List<string> nextStates = Ndfa.getNextStates("$", state);
+                foreach (string s in nextStates)
+                {
+                    State newState = new State(s, Ndfa);
+                    if (!NewState.HasState(closureStates, newState))
+                    {
+                        closureStates.Add(newState);
+                    }
+                    List<State> newCloses = GetEpsilonClosure(s, Ndfa);
+                    foreach (State s2 in newCloses)
+                    {
+                        if (!NewState.HasState(closureStates, s2)) ;
+                        closureStates.Add(s2);
+                    }
+                }
+            }
+            return closureStates;
+        }
+
+        public static int TranslateToDfa(Automata Ndfa)
+        {
+
+            NewState deadState = new NewState(new List<State>(), "D");
+            Database.transStates.Add(deadState);
+
+            List<State> closures = GetEpsilonClosure(Ndfa.startStates.ElementAt(0), Ndfa);
+            List<State> oldStates = new List<State>();
+            foreach (State s in closures)
+            {
+                if (!NewState.HasState(oldStates, s))
+                {
+                    oldStates.Add(s);
+                }
+            }
+            oldStates.Add(new State(Ndfa.startStates.ElementAt(0), Ndfa));
+            NewState begin = new NewState(oldStates, "t" + Database.nameIndex);
+            Database.nameIndex++;
+            Database.transStates.Add(begin);
+            int index = Database.transStates.IndexOf(begin);
+            foreach (char s in Ndfa.getAlphabet())
+            {
+                //List<string> nextStatesString = Ndfa.getNextStates(s.ToString(), Ndfa.startStates.ElementAt(0));
+                List<State> nextStates = new List<State>();
+
+                foreach (State state in oldStates)
+                {
+                    List<string> nextStatesString = Ndfa.getNextStates(s.ToString(), state.name);
+
+                    foreach (string s2 in nextStatesString)
+                    {
+                        State s4 = new State(s2, Ndfa);
+                        if (!NewState.HasState(nextStates, s4))
+                        {
+                            nextStates.Add(s4);
+                        }
+                        List<State> tempStates = GetEpsilonClosure(s2, Ndfa);
+                        foreach (State s7 in tempStates)
+                        {
+                            State newS = new State(s7.name, Ndfa);
+                            if (!NewState.HasState(nextStates, newS))
+                            {
+                                nextStates.Add(newS);
+                            }
+                        }
+
+                    }
+                    List<State> closureStates = GetEpsilonClosure(state.name, Ndfa);
+                    foreach (State cState in closureStates)
+                    {
+                        List<string> afterClosure = Ndfa.getNextStates(s.ToString(), cState.name);
+                        foreach (string s3 in afterClosure)
+                        {
+                            State newS = new State(s3, Ndfa);
+                            if (!NewState.HasState(nextStates, newS))
+                            {
+                                nextStates.Add(newS);
+                            }
+                        }
+                    }
+                }
+
+                if (nextStates.Count == 0)
+                {
+                    Database.transStates.ElementAt(index).transitions.Add(s, deadState);
+                }
+                else
+                {
+                    Tuple<bool, int> tuple = NewState.ContainsState(Database.transStates, nextStates);
+                    if (tuple.Item1)
+                    {
+                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.getState(Database.transStates, nextStates));
+                    }
+                    else
+                    {
+                        Database.transStates.ElementAt(index).transitions.Add(s, Database.transStates.ElementAt(getNewState(nextStates, Ndfa, deadState)));
+                    }
+                }
+            }
+            Automata a = new Automata(Ndfa.symbols.ToArray());
+            bool used = false;
+            foreach (NewState s in Database.transStates)
+            {
+                {
+                    //a.addState(s.name);
+                    foreach (KeyValuePair<char, NewState> k in s.transitions)
+                    {
+                        Transition t = new Transition(s.name, k.Key.ToString(), k.Value.name);
+                        a.addTransition(t);
+                    }
+                    foreach (State state in s.oldStates)
+                    {
+                        foreach (string finalState in Ndfa.finalStates)
+                        {
+                            if (state.name == finalState)
+                            {
+                                a.defineAsFinalState(s.name);
+                            }
+                        }
+                    }
+                }
+                
+            }
+            a.defineAsStartState(Database.transStates[1].name);
+            
+            Database.Automatas.Add(Database.nextId, a);
+            Database.nextId++;
+            return Database.nextId - 1;
+        }
+
+        public static int getNewState(List<State> nextStates2, Automata Ndfa, NewState dead)
+        {
+            NewState begin = new NewState(nextStates2, "t" + Database.nameIndex);
+            Database.nameIndex++;
+            Database.transStates.Add(begin);
+            int index = Database.transStates.IndexOf(begin);
+            foreach (char s in Ndfa.getAlphabet())
+            {
+                List<State> nextStates = new List<State>();
+                foreach (State state in nextStates2)
+                {
+                    List<string> nextStatesString = Ndfa.getNextStates(s.ToString(), state.name);
+
+                    foreach (string s2 in nextStatesString)
+                    {
+                        State s4 = new State(s2, Ndfa);
+                        if (!NewState.HasState(nextStates, s4))
+                        {
+                            nextStates.Add(s4);
+                        }
+                        List<State> tempStates = GetEpsilonClosure(s2, Ndfa);
+                        foreach (State s7 in tempStates)
+                        {
+                            State newS = new State(s7.name, Ndfa);
+                            if (!NewState.HasState(nextStates, newS))
+                            {
+                                nextStates.Add(newS);
+                            }
+                        }
+
+                    }
+                    List<State> closureStates = GetEpsilonClosure(state.name, Ndfa);
+                    foreach (State cState in closureStates)
+                    {
+                        List<string> afterClosure = Ndfa.getNextStates(s.ToString(), cState.name);
+                        foreach (string s3 in afterClosure)
+                        {
+                            State newS = new State(s3, Ndfa);
+                            if (!NewState.HasState(nextStates, newS))
+                            {
+                                nextStates.Add(newS);
+                            }
+                        }
+                    }
+                }
+
+
+                if (nextStates.Count == 0)
+                {
+                    Database.transStates.ElementAt(index).transitions.Add(s, dead);
+                }
+                else
+                {
+                    Tuple<bool, int> tuple = NewState.ContainsState(Database.transStates, nextStates);
+                    if (tuple.Item1)
+                    {
+                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.getState(Database.transStates, nextStates));
+                    }
+                    else
+                    {
+                        Database.transStates.ElementAt(index).transitions.Add(s, Database.transStates.ElementAt(getNewState(nextStates, Ndfa, dead)));
+                    }
+                }
+            }
+            return index;
+        }
+
+        public static int MinimiseDfa(Automata dfa)
+        {
+            EquivalenceTable table = new EquivalenceTable();
+            //First seperate final state
+            List<string> finals = dfa.finalStates.ToList();
+            List<string> nonFinals = new List<string>();
+            foreach(string state in dfa.states)
+            {
+                if (!dfa.finalStates.Contains(state))
+                {
+                    nonFinals.Add(state);
+                }
+            }
+            table.addGroup(finals);
+            table.addGroup(nonFinals);
+
+            EquivalenceTable newTable = table.getNextEquivelance(table, dfa, table);
+
+            while (!table.tablesAreSame(newTable, dfa))
+            {
+                table = newTable;
+                newTable = table.getNextEquivelance(table, dfa, table);
+            }
+
+            Automata newDfa = new Automata(dfa.symbols);
+            for(int i = 0; i < newTable.equivelences.Count; i++)
+            {
+                string fromName = newTable.getListName(i);
+                foreach(char symbol in dfa.symbols)
+                {
+                    int index = newTable.getListIndex(dfa.getNextStates(symbol.ToString(), newTable.equivelences[i][0])[0]);
+                    string toName = newTable.getListName(index);
+                    newDfa.addTransition(new Transition(fromName, symbol.ToString(), toName));
+                }
+                
+            }
+            List<string> startStates = new List<string>();
+            List<string> finalStates = new List<string>();
+            foreach (string state in newDfa.states)
+            {
+                foreach(string final in dfa.finalStates)
+                {
+                    if (state.Contains(final))
+                    {
+                        finalStates.Add(state);
+                    }
+                }
+                foreach (string start in dfa.startStates)
+                {
+                    if (state.Contains(start))
+                    {
+                        startStates.Add(state);
+                    }
+                }
+            }
+            foreach(string s in startStates)
+            {
+                newDfa.defineAsStartState(s);
+            }
+            foreach(string s in finalStates)
+            {
+                newDfa.defineAsFinalState(s);
+            }
+            Database.Automatas.Add(Database.nextMinimisedId, newDfa);
+            Database.nextMinimisedId++;
+
+            return Database.nextMinimisedId - 1;
+        }
+
+        
     }
 }

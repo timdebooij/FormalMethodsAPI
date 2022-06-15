@@ -57,6 +57,14 @@ namespace FormalMethodsAPI.Controllers
             return JsonConvert.SerializeObject(network);
         }
 
+        [HttpGet("ndfaId")]
+        public string GetNDfaIds()
+        {
+            Database.getAutomatas();
+            Network network = new Network(0, null, null, null, null, 300, "", Database.getNdfaIds(), false);
+            return JsonConvert.SerializeObject(network);
+        }
+
         [HttpGet("create/{id}/{alphabet}")]
         public string CreateNewAutomata(int id, string alphabet)
         {
@@ -143,6 +151,73 @@ namespace FormalMethodsAPI.Controllers
             else
             {
                 return GetErrorString(404, "Given key not found");
+            }
+        }
+
+        [HttpGet("todfa/{id}")]
+        public string ToDfa(int id)
+        {
+            if(id == -999)
+            {
+                return GetErrorString(404, "First load the Ndfa before trying to convert");
+            }
+            else
+            {
+                if (Database.Automatas.ContainsKey(id))
+                {
+                    Database.transStates = new List<NewState>();
+                    Database.nameIndex = 0;
+                    int index = Automata.TranslateToDfa(Database.Automatas[id]);
+                    return GetNetworkString(index);
+                }
+                else
+                {
+                    return GetErrorString(404, "Given key not found");
+                }
+            }
+            
+        }
+
+        [HttpGet("minimise/{id}")]
+        public string MinimiseDfa(int id)
+        {
+            if (id == -999)
+            {
+                return GetErrorString(404, "First load the Dfa before trying to minimise");
+            }
+            else
+            {
+                if (Database.Automatas.ContainsKey(id))
+                {
+                    int index = Automata.MinimiseDfa(Database.Automatas[id]);
+                    return GetNetworkString(index);
+                }
+                else
+                {
+                    return GetErrorString(404, "Given key not found");
+                }
+            }
+        }
+
+        [HttpGet("togrammar/{id}")]
+        public string GetGrammar(int id)
+        {
+            if (id == -999)
+            {
+                return GetErrorString(404, "First load the Dfa before trying to load the grammar");
+            }
+            else
+            {
+                if (Database.Automatas.ContainsKey(id))
+                {
+                    Grammar grammar = new Grammar();
+                    grammar.generateGrammar(Database.Automatas[id]);
+                    return JsonConvert.SerializeObject(grammar);
+                }
+                else
+                {
+                    return GetErrorString(404, "Given key not found");
+                }
             }
         }
 
