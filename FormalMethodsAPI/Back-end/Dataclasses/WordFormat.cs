@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Data Class to store the result of a checked word (checked in automata or Regular Expression)
+    /// </summary>
     public class WordFormat
     {
         public bool inLanguage { get; set; }

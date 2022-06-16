@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end
 {
+    /// <summary>
+    /// Class for the Regular Expressions
+    /// </summary>
     public class RegularExpression
     {
         Operator oper;
@@ -135,222 +138,12 @@ namespace FormalMethodsAPI.Back_end
                     break;
 
                 default:
-                    Console.WriteLine("getLanguage is nog niet gedefinieerd voor de operator: " + this.oper);
                     break;
             }
             return languageResult;
         }
 
-        public static RegularExpression getTestExpression()
-        {
-            RegularExpression expr1, expr2, expr3, expr4, expr5, a, b, all;
-            a = new RegularExpression("a");
-            b = new RegularExpression("b");
-            // expr1: "baa"
-            expr1 = new RegularExpression("baa");
-            // expr2: "bb"
-            expr2 = new RegularExpression("bb");
-            // expr3: "baa | baa"
-            expr3 = expr1.or(expr2);
-
-            // all: "(a|b)*"
-            all = (a.or(b)).star();
-
-            // expr4: "(baa | baa)+"
-            expr4 = expr3.plus();
-            // expr5: "(baa | baa)+ (a|b)*"
-            expr5 = expr4.dot(all);
-            return expr5;
-        }
-
-        public static string getExpressionString(RegularExpression exp)
-        {
-            RegularExpression current = exp;
-            string result = exp.terminals;
-            while(current.left != null)
-            {
-                result = current.left.terminals + operToString(current.left.oper) + result;
-                current = current.left;
-            }
-            current = exp;
-            while(current.right != null)
-            {
-                result = result + operToString(current.right.oper) + current.right.terminals;
-                current = current.right;
-            }
-            return result;
-        }
-
-        public static string operToString(Operator o)
-        {
-            switch (o)
-            {
-                case Operator.ONE:
-                    return " ";
-                case Operator.DOT:
-                    return " ";
-                case Operator.STAR:
-                    return "*";
-                case Operator.PLUS:
-                    return "+";
-                case Operator.OR:
-                    return "|";
-                default:
-                    return " ";
-            }
-        }
-        public static RegularExpression generate(string input)
-        {
-            input = Regex.Replace(input, @"\s+", "");
-            List<RegularExpression> expressions = new List<RegularExpression>();
-            string[] arr = input.Split('!');
-            foreach (string s in arr)
-            {
-
-                string[] plusArrayTemp = s.Split('(', ')');
-                List<string> plusArray = new List<string>();
-                foreach (string item in plusArrayTemp)
-                {
-                    if (item.Count() > 0)
-                    {
-                        plusArray.Add(item);
-                    }
-                }
-
-                foreach (string q in plusArray)//seperateStarPlus(plusArray))
-                {
-                    if (q.Contains('|'))
-                    {
-                        string[] orSplit = q.Split('|');
-                        RegularExpression splitExp = new RegularExpression(orSplit[0]);
-                        if (orSplit[0].Contains("*"))
-                        {
-                            splitExp = new RegularExpression(orSplit[0][0].ToString());
-                            splitExp = splitExp.star();
-                        }
-                        else if (orSplit[0].Contains("+"))
-                        {
-                            splitExp = new RegularExpression(orSplit[0][0].ToString());
-                            splitExp = splitExp.plus();
-                        }
-                        
-                        for (int i = 1; i < orSplit.Count(); i++)
-                        {
-                            RegularExpression tempExp = new RegularExpression(orSplit[i]);
-                            if (orSplit[i].Contains("*"))
-                            {
-                                tempExp = new RegularExpression(orSplit[i][0].ToString());
-                                tempExp = tempExp.star();
-                            }
-                            else if (orSplit[i].Contains("+"))
-                            {
-                                tempExp = new RegularExpression(orSplit[i][0].ToString());
-                                tempExp = tempExp.plus();
-                            }
-                            splitExp = splitExp.or(tempExp);
-                        }
-                        expressions.Add(splitExp);
-                    }
-                    else if (String.Compare("*", q) == 0)
-                    {
-                        expressions[expressions.Count - 1] = expressions[expressions.Count - 1].star();
-                    }
-                    else if (String.Compare("+", q) == 0)
-                    {
-                        expressions[expressions.Count - 1] = expressions[expressions.Count - 1].plus();
-                    }
-                    else
-                    {
-                        expressions.Add(new RegularExpression(q));
-                    }
-                }
-            }
-            RegularExpression returnValue = expressions[0];
-            for (int j = 1; j < expressions.Count; j++)
-            {
-                returnValue = returnValue.dot(expressions[j]);
-            }
-            return returnValue;
-        }
-
-        public static List<string> seperateStarPlus(List<string> conjoinedArray)
-        {
-            List<string> seperatedArray = new List<string>();
-            foreach (string z in conjoinedArray)
-            {
-                if (z.Contains('*'))
-                {
-                    seperatedArray = seperatedArray.Concat(splitOperator(z, "(\\*)")).ToList();
-                }
-                else if (z.Contains('+'))
-                {
-                    seperatedArray =  seperatedArray.Concat(splitOperator(z, "(\\+)")).ToList();
-                }
-                else
-                {
-                    seperatedArray.Add(z);
-                }
-            }
-            return seperatedArray;
-        }
-
-        public static List<string> splitOperator(string input, string oper)
-        {
-            var regEx = new Regex(oper);
-            string[] substrings = regEx.Split(input);
-            List<string> returnList = new List<string>();
-            foreach (string n in substrings)
-            {
-                if (!String.Equals(n, ""))
-                {
-                    returnList.Add(n);
-                }
-            }
-            return returnList;
-        }
-
-        public static bool checkInput(string input)
-        {
-            int freqOpening = input.Count(f => (f == '('));
-            int freqClosing = input.Count(f => (f == ')'));
-            if (freqClosing % 2 != 0 || freqOpening % 2 != 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public static List<string> GetRandomWord(RegularExpression expression, List<string> alphabet)
-        {
-            List<string> language = expression.getLanguage(6).ToList();
-            foreach (string l in language)
-            {
-                Console.WriteLine(l);
-            }
-            Console.WriteLine("");
-            List<string> nonLanguage = new List<string>(0);
-            string word = "";
-            string tempWord = "";
-
-            foreach (string c in alphabet)
-            {
-                word = word + c;
-                tempWord = word;
-
-                foreach (string t in alphabet)
-                {
-                    tempWord = tempWord + t;
-                    if (!language.Contains(tempWord))
-                    {
-                        nonLanguage.Add(tempWord);
-                    }
-                }
-
-
-            }
-            return nonLanguage;
-        }
+        
 
         public static List<string> getAlphabet(string expression)
         {
@@ -380,6 +173,13 @@ namespace FormalMethodsAPI.Back_end
             return returnList;
         }
         
+        /// <summary>
+        /// Function to go from expression to NDFA
+        /// </summary>
+        /// <param name="expression"> The expression</param>
+        /// <param name="automata"> The automata</param>
+        /// <param name="lastState"> The last state</param>
+        /// <returns> Tuple of automata and last state</returns>
         public static Tuple<Automata, string> GetNdfa(RegularExpression expression, Automata automata, string lastState)
         {
             switch (expression.oper)
@@ -510,6 +310,58 @@ namespace FormalMethodsAPI.Back_end
             }
 
             return Tuple.Create(automata, lastState);
+        }
+
+        public static char[] GetAlphabetExp(RegularExpression expression)
+        {
+            List<string> array = new List<string>();
+            List<string> arr = GetNextTerminals(expression, array);
+            List<char> list = new List<char>();
+            foreach(string s in arr)
+            {
+                for(int i = 0; i < s.Length; i++)
+                {
+                    if (!list.Contains(s[i]))
+                    {
+                        list.Add(s[i]);
+                    }
+                }
+            }
+            return list.ToArray();
+        }
+
+        public static List<string> GetNextTerminals(RegularExpression expression, List<string> currentArray)
+        {
+            if (!currentArray.Contains(expression.terminals) && !(expression.terminals == ""))
+            {
+                currentArray.Add(expression.terminals);
+            }
+            List<string> left = new List<string>();
+            List<string> right = new List<string>();
+            if (expression.left != null)
+            {
+                left = GetNextTerminals(expression.left, currentArray);
+            }
+            if(expression.right != null)
+            {
+                right = GetNextTerminals(expression.right, currentArray);
+            }
+
+            foreach(string l in left)
+            {
+                if (!currentArray.Contains(l) && !(l == ""))
+                {
+                    currentArray.Add(l);
+                }
+            }
+            foreach (string r in right)
+            {
+                if (!currentArray.Contains(r) && !(r == ""))
+                {
+                    currentArray.Add(r);
+                }
+            }
+            return currentArray;
         }
 
         public static Tuple<Automata, string> CreateOne(Automata automata, string c, string lastState)

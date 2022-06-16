@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Data Class for storing a state and the automata it belongs to
+    /// </summary>
     public class State
     {
         public string name { get; set; }

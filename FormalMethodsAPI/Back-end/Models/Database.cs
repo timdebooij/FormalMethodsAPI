@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Static class that represents a Database
+    /// </summary>
     public class Database
     {
         public static Dictionary<int, Automata> Automatas = new Dictionary<int, Automata>();
@@ -17,6 +20,10 @@ namespace FormalMethodsAPI.Back_end.Models
         public static int nextName = 0;
         public static int nameIndex = 0;
 
+        /// <summary>
+        /// Gets all the id's from the automatas
+        /// </summary>
+        /// <returns> The list with id's</returns>
         public static List<int> getIds()
         {
             List<int> ids = new List<int>();
@@ -27,6 +34,9 @@ namespace FormalMethodsAPI.Back_end.Models
             return ids;
         }
 
+        /// <summary>
+        /// Resets the database to the original setting
+        /// </summary>
         public static void ResetDatabase()
         {
             Automatas = new Dictionary<int, Automata>();
@@ -41,6 +51,10 @@ namespace FormalMethodsAPI.Back_end.Models
             nameIndex = 0;
         }
 
+        /// <summary>
+        /// Getting the id's of the automatas that are a DFA
+        /// </summary>
+        /// <returns> List of id's</returns>
         public static List<int> getDfaIds()
         {
             List<int> ids = new List<int>();
@@ -54,6 +68,10 @@ namespace FormalMethodsAPI.Back_end.Models
             return ids;
         }
 
+        /// <summary>
+        /// Getting the id's of the automatas that are a NDFA
+        /// </summary>
+        /// <returns> List of id's</returns>
         public static List<int> getNdfaIds()
         {
             List<int> ids = new List<int>();
@@ -67,8 +85,13 @@ namespace FormalMethodsAPI.Back_end.Models
             return ids;
         }
 
+        /// <summary>
+        /// Seeding the database with hardcoded automatas
+        /// </summary>
+        /// <returns> The created automatas</returns>
         public static Dictionary<int, Automata> getAutomatas()
         {
+            // Checking if the database is empty
             if(Database.Automatas.Count == 0)
             {
                 SortedSet<string> ends = new SortedSet<string>();

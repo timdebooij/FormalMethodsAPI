@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Data Class for storing the color of a visnode
+    /// </summary>
     public class Color
     {
         public string border;

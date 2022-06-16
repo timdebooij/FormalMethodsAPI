@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Data Class for network. It is a combination of all information that the frontend needs to generate a visnetwork
+    /// </summary>
     public class Network
     {
         public int id { get; set; }

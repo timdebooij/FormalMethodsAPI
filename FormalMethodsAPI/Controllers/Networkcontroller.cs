@@ -1,5 +1,7 @@
 ﻿using FormalMethodsAPI.Back_end;
+using FormalMethodsAPI.Back_end.Helpers;
 using FormalMethodsAPI.Back_end.Models;
+using FormalMethodsAPI.Data;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +17,11 @@ namespace FormalMethodsAPI.Controllers
     [ApiController]
     public class Networkcontroller : ControllerBase
     {
-        //public Dictionary<int, Automata> Automatas = new Dictionary<int, Automata>();
-
         [HttpGet]
-        //public IEnumerable<WeatherForecast> Get()
         public string Get(string input)
         {
-            Automata m = Automata.getExampleSlide14Lesson2();
-            Network network = Automata.getVisNodes(0, m);
+            Automata m = AutomataHelper.getExampleSlide14Lesson2();
+            Network network = AutomataHelper.getVisNodes(0, m);
             var jsonBoth = JsonConvert.SerializeObject(network);
             return jsonBoth;
         }
@@ -167,7 +166,7 @@ namespace FormalMethodsAPI.Controllers
                 {
                     Database.transStates = new List<NewState>();
                     Database.nameIndex = 0;
-                    int index = Automata.TranslateToDfa(Database.Automatas[id]);
+                    int index = AutomataHelper.TranslateToDfa(Database.Automatas[id]);
                     return GetNetworkString(index);
                 }
                 else
@@ -189,7 +188,7 @@ namespace FormalMethodsAPI.Controllers
             {
                 if (Database.Automatas.ContainsKey(id))
                 {
-                    int index = Automata.MinimiseDfa(Database.Automatas[id]);
+                    int index = AutomataHelper.MinimiseDfa(Database.Automatas[id]);
                     return GetNetworkString(index);
                 }
                 else
@@ -389,7 +388,7 @@ namespace FormalMethodsAPI.Controllers
             }
             else
             {
-                int id = Automata.Concatenation(Database.Automatas[id1], Database.Automatas[id2]);
+                int id = AutomataHelper.Concatenation(Database.Automatas[id1], Database.Automatas[id2]);
                 if(id == -9090)
                 {
                     Database.newStates = new List<NewState>();
@@ -410,7 +409,7 @@ namespace FormalMethodsAPI.Controllers
             }
             else
             {
-                int id = Automata.Union(Database.Automatas[id1], Database.Automatas[id2]);
+                int id = AutomataHelper.Union(Database.Automatas[id1], Database.Automatas[id2]);
                 if (id == -9090)
                 {
                     Database.newStates = new List<NewState>();
@@ -431,7 +430,7 @@ namespace FormalMethodsAPI.Controllers
             }
             if (Database.Automatas.ContainsKey(id))
             {
-                Automata a = Automata.Complement(Database.Automatas[id]);
+                Automata a = AutomataHelper.Complement(Database.Automatas[id]);
                 int index = Database.nextCompId;
                 Database.Automatas.Add(index, a);
                 Database.nextCompId++;
@@ -454,7 +453,7 @@ namespace FormalMethodsAPI.Controllers
             else
             {
                 input = input.Replace('@', '+');
-                RegularExpression exp = RegularExpression.generate(input);
+                RegularExpression exp = RegularExpressionHelper.generate(input);
                 Automata a = new Automata(RegularExpression.getCharAlphabet(input).ToArray());
                 Tuple<Automata, string> tuple = RegularExpression.GetNdfa(exp, a, null);
                 tuple.Item1.defineAsStartState(RegularExpression.GetLowest(tuple.Item1.states.ToList()));
@@ -467,6 +466,22 @@ namespace FormalMethodsAPI.Controllers
 
             }
 
+        } 
+
+        [HttpGet("dfalanguage/{id}")]
+        public string DFALanguage(int id)
+        {
+            Database.getAutomatas();
+            if (Database.Automatas.ContainsKey(id))
+            {
+                RegExpData data = new RegExpData();
+                data.language = AutomataHelper.GetLanguage(Database.Automatas[id]);
+                return JsonConvert.SerializeObject(data);
+            }
+            else
+            {
+                return GetErrorString(404, "Given key was not found");
+            }
         }
 
         public static string GetNextState(int iteration)
@@ -477,7 +492,7 @@ namespace FormalMethodsAPI.Controllers
 
         public string GetNetworkString(int id, int status = 200, string errorMessage = "")
         {
-            Network network = Automata.getVisNodes(id, Database.Automatas[id]);
+            Network network = AutomataHelper.getVisNodes(id, Database.Automatas[id]);
             network.status = status;
             network.errorMessage = errorMessage;
             return JsonConvert.SerializeObject(network);

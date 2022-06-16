@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Data
 {
+    /// <summary>
+    /// Data Class for sending regular expression to the frontend
+    /// </summary>
     public class RegExpData
     {
         public string message { get; set; }

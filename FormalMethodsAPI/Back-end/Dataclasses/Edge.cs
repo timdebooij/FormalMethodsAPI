@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Data Class to represent an edge in a visnetwork
+    /// </summary>
     public class Edge
     {
         public int from;

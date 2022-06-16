@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace FormalMethodsAPI.Back_end.Models
 {
+    /// <summary>
+    /// Class that represents a transition between states of an automata
+    /// </summary>
     public class Transition
     {
         public static string EPSILON = "$";
@@ -12,14 +15,6 @@ namespace FormalMethodsAPI.Back_end.Models
         private string fromState;
         private string symbol;
         private string toState;
-
-        /**
-        // this constructor can be used to define loops:
-        public Transition(char fromOrTo, char s)
-        {
-            this(fromOrTo, s, fromOrTo);
-        }
-        **/
 
         public Transition(string from, string to)
         {
@@ -50,11 +45,6 @@ namespace FormalMethodsAPI.Back_end.Models
         public string getSymbol()
         {
             return symbol;
-        }
-
-        public String toString()
-        {
-            return "(" + this.getFromState() + ", " + this.getSymbol() + ")" + "-->" + this.getToState();
         }
     }
 }
