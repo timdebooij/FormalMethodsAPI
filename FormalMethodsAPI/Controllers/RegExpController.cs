@@ -24,13 +24,13 @@ namespace FormalMethodsAPI.Controllers
                 return "False data";
             }
             input = input.Replace('@', '+');
-            RegularExpression exp = RegularExpressionHelper.generate(input);
+            RegularExpression exp = RegularExpressionHelper.Generate(input);
             RegExpData data = new RegExpData();
             data.expression = input;
-            data.language = exp.getLanguage(5).ToList().OrderBy(x => x.Length).ToList();
+            data.language = exp.GetLanguage(5).ToList().OrderBy(x => x.Length).ToList();
             data.size = data.language.Count;
             data.message = "Succesfully send an expression";
-            data.nonLanguage = RegularExpressionHelper.GetRandomWord(exp, RegularExpression.getAlphabet(input));
+            data.nonLanguage = RegularExpressionHelper.GetRandomWord(exp, RegularExpression.GetAlphabet(input));
             Console.WriteLine(data.language);
             string jsonString = JsonSerializer.Serialize(data);
             return jsonString;

@@ -16,7 +16,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// <param name="id"> The id of the new automata within the database</param>
         /// <param name="m"> The automata to parse</param>
         /// <returns></returns>
-        public static Network getVisNodes(int id, Automata m)
+        public static Network GetVisNodes(int id, Automata m)
         {
             // Variables for the network
             List<Node> nodes = new List<Node>();
@@ -75,9 +75,9 @@ namespace FormalMethodsAPI.Back_end.Models
             // Adding all the edges to the network
             foreach (Transition trans in m.transitions)
             {
-                int idFrom = dict[trans.getFromState()];
-                int idTo = dict[trans.getToState()];
-                string symbol = trans.getSymbol();
+                int idFrom = dict[trans.GetFromState()];
+                int idTo = dict[trans.GetToState()];
+                string symbol = trans.GetSymbol();
                 Edge edge = new Edge(idFrom, idTo, symbol);
                 edges.Add(edge);
             }
@@ -104,7 +104,7 @@ namespace FormalMethodsAPI.Back_end.Models
             }
 
             // Creating the network
-            Network returnlist = new Network(id, nodes, edges, m.getAlphabet(), m.states.ToList(), 200, "", Database.getIds(), m.isDFA());
+            Network returnlist = new Network(id, nodes, edges, m.GetAlphabet(), m.states.ToList(), 200, "", Database.GetIds(), m.IsDFA());
             return returnlist;
         }
 
@@ -112,31 +112,31 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Building a standard automata from the lessons
         /// </summary>
         /// <returns> Build automata</returns>
-        static public Automata getExampleSlide14Lesson2()
+        static public Automata GetExampleSlide14Lesson2()
         {
             char[] alphabet = { 'a', 'b' };
             Automata m = new Automata(alphabet);
 
-            m.addTransition(new Transition("A", "a", "C"));
-            m.addTransition(new Transition("A", "b", "B"));
-            m.addTransition(new Transition("A", "b", "C"));
+            m.AddTransition(new Transition("A", "a", "C"));
+            m.AddTransition(new Transition("A", "b", "B"));
+            m.AddTransition(new Transition("A", "b", "C"));
 
-            m.addTransition(new Transition("B", "b", "C"));
-            m.addTransition(new Transition("B", "C"));
+            m.AddTransition(new Transition("B", "b", "C"));
+            m.AddTransition(new Transition("B", "C"));
 
-            m.addTransition(new Transition("C", "a", "D"));
-            m.addTransition(new Transition("C", "a", "E"));
-            m.addTransition(new Transition("C", "b", "D"));
+            m.AddTransition(new Transition("C", "a", "D"));
+            m.AddTransition(new Transition("C", "a", "E"));
+            m.AddTransition(new Transition("C", "b", "D"));
 
-            m.addTransition(new Transition("D", "a", "B"));
-            m.addTransition(new Transition("D", "a", "C"));
+            m.AddTransition(new Transition("D", "a", "B"));
+            m.AddTransition(new Transition("D", "a", "C"));
 
-            m.addTransition(new Transition("E", "a", "E"));
-            m.addTransition(new Transition("E", "D"));
+            m.AddTransition(new Transition("E", "a", "E"));
+            m.AddTransition(new Transition("E", "D"));
 
-            m.defineAsStartState("A");
-            m.defineAsFinalState("C");
-            m.defineAsFinalState("E");
+            m.DefineAsStartState("A");
+            m.DefineAsFinalState("C");
+            m.DefineAsFinalState("E");
 
             return m;
         }
@@ -149,7 +149,7 @@ namespace FormalMethodsAPI.Back_end.Models
             foreach(char symbol in a.symbols)
             {
                 string word = symbol.ToString();
-                List<string> nextStates = a.getNextStates(symbol.ToString(), start);
+                List<string> nextStates = a.GetNextStates(symbol.ToString(), start);
                 //foreach(string next in nextStates)
                 //{
                     language = language.Concat(GetNextWord(word, a, nextStates[0], 5)).ToList();
@@ -166,7 +166,7 @@ namespace FormalMethodsAPI.Back_end.Models
                 foreach (char symbol in a.symbols)
                 {
                     //returnList.Add(currentWord + symbol);
-                    List<string> nextStates = a.getNextStates(symbol.ToString(), state);
+                    List<string> nextStates = a.GetNextStates(symbol.ToString(), state);
                     foreach (string next in nextStates)
                     {
                         if (a.finalStates.Contains(next))
@@ -245,7 +245,7 @@ namespace FormalMethodsAPI.Back_end.Models
                 states.Add(new State(firstState, a1));
 
                 // getting the NewStates
-                newStates = getNewState(newStates, states, symbols.ToList(), 1, a1, a2, true);
+                newStates = GetNewState(newStates, states, symbols.ToList(), 1, a1, a2, true);
 
                 // If there are no NewStates return an error 
                 if (newStates == null)
@@ -263,25 +263,25 @@ namespace FormalMethodsAPI.Back_end.Models
             foreach (NewState s in Database.newStates)
             {
                 // Adding states
-                a.addState(s.name);
+                a.AddState(s.name);
 
                 // Adding transitions
                 foreach (KeyValuePair<char, NewState> k in s.transitions)
                 {
                     Transition t = new Transition(s.name, k.Key.ToString(), k.Value.name);
-                    a.addTransition(t);
+                    a.AddTransition(t);
                 }
                 foreach (State q in s.oldStates)
                 {
                     // Defining start states
                     if (q.name == beginState)
                     {
-                        a.defineAsStartState(s.name);
+                        a.DefineAsStartState(s.name);
                     }
                     // Defining end states
                     if (q.name == endState)
                     {
-                        a.defineAsFinalState(s.name);
+                        a.DefineAsFinalState(s.name);
                     }
                 }
             }
@@ -324,7 +324,7 @@ namespace FormalMethodsAPI.Back_end.Models
             states.Add(secondState);
 
             // Getting the new NewStates
-            List<NewState> tuple = getNewState(newStates, states, symbols.ToList(), 1, a1, a2, false);
+            List<NewState> tuple = GetNewState(newStates, states, symbols.ToList(), 1, a1, a2, false);
 
             // If there are no NewStates return an error 
             if (tuple == null)
@@ -340,13 +340,13 @@ namespace FormalMethodsAPI.Back_end.Models
             foreach (NewState s in Database.newStates)
             {
                 // Adding states
-                a.addState(s.name);
+                a.AddState(s.name);
 
                 // Adding transitions
                 foreach (KeyValuePair<char, NewState> k in s.transitions)
                 {
                     Transition t = new Transition(s.name, k.Key.ToString(), k.Value.name);
-                    a.addTransition(t);
+                    a.AddTransition(t);
                 }
 
                 // Defining end states
@@ -354,13 +354,13 @@ namespace FormalMethodsAPI.Back_end.Models
                 {
                     if (q.name == finalState || q.name == finalState2)
                     {
-                        a.defineAsFinalState(s.name);
+                        a.DefineAsFinalState(s.name);
                     }
                 }
             }
 
             // Defining the start state
-            a.defineAsStartState(NewState.getState(Database.newStates, states).name);
+            a.DefineAsStartState(NewState.GetState(Database.newStates, states).name);
 
             // Adding to the database and returning its index
             Database.Automatas.Add(Database.nextId, a);
@@ -379,7 +379,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// <param name="second"> Second Automata</param>
         /// <param name="concat"> Boolean to indicate if concatenation is happening</param>
         /// <returns> The new states</returns>
-        static public List<NewState> getNewState(List<NewState> newStates, List<State> states, List<char> symbols, int newName, Automata first, Automata second, bool concat)
+        static public List<NewState> GetNewState(List<NewState> newStates, List<State> states, List<char> symbols, int newName, Automata first, Automata second, bool concat)
         {
             // Checking if the state to add is already present
             Tuple<bool, int> contains = NewState.ContainsState(Database.newStates, states);
@@ -398,12 +398,12 @@ namespace FormalMethodsAPI.Back_end.Models
                     List<State> nextStates = new List<State>();
                     foreach (State state in states)
                     {
-                        nextStates.Add(new State(state.automata.getNextStates(c.ToString(), state.name)[0], state.automata));
+                        nextStates.Add(new State(state.automata.GetNextStates(c.ToString(), state.name)[0], state.automata));
                     }
 
                     // Getting the new next state from the current state with symbol c
                     newName++;
-                    Tuple<NewState, List<NewState>> tuple = getNewS(newStates, nextStates, symbols, newName, first, second, concat);
+                    Tuple<NewState, List<NewState>> tuple = GetNewS(newStates, nextStates, symbols, newName, first, second, concat);
                     if (tuple == null)
                     {
                         return null;
@@ -429,7 +429,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// <param name="second"> Second Automata</param>
         /// <param name="concat"> Boolean to indicate if concatenation is happening</param>
         /// <returns> A tuple of the new NewState and the current newStates</returns>
-        static public Tuple<NewState, List<NewState>> getNewS(List<NewState> newStates, List<State> states, List<char> symbols, int newName, Automata first, Automata second, bool concat)
+        static public Tuple<NewState, List<NewState>> GetNewS(List<NewState> newStates, List<State> states, List<char> symbols, int newName, Automata first, Automata second, bool concat)
         {
             // Checking if the current newStates contain the state that is trying to be added
             Tuple<bool, int> contains = NewState.ContainsState(Database.newStates, states);
@@ -455,7 +455,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     List<State> nextStates = new List<State>();
                     foreach (State state in states)
                     {
-                        string nextstate = state.automata.getNextStates(c.ToString(), state.name)[0];
+                        string nextstate = state.automata.GetNextStates(c.ToString(), state.name)[0];
 
                         // checking if the nextstate is not present yet
                         if (!NewState.CheckState(nextStates, nextstate))
@@ -471,7 +471,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     }
 
                     // Getting the new NewState for the symbol transition
-                    Tuple<NewState, List<NewState>> tuple = getNewS(newStates, nextStates, symbols, newName + 1, first, second, concat);
+                    Tuple<NewState, List<NewState>> tuple = GetNewS(newStates, nextStates, symbols, newName + 1, first, second, concat);
                     if (tuple == null)
                     {
                         return null;
@@ -485,7 +485,7 @@ namespace FormalMethodsAPI.Back_end.Models
             }
             else
             {
-                return Tuple.Create(NewState.getState(Database.newStates, states), newStates);
+                return Tuple.Create(NewState.GetState(Database.newStates, states), newStates);
             }
         }
 
@@ -501,10 +501,10 @@ namespace FormalMethodsAPI.Back_end.Models
             List<State> closureStates = new List<State>();
 
             // Checking if there is an epsilon leaving the current state
-            if (Ndfa.getNextStates("$", state).Count != 0)
+            if (Ndfa.GetNextStates("$", state).Count != 0)
             {
                 // Getting the next state with the epsilon
-                List<string> nextStates = Ndfa.getNextStates("$", state);
+                List<string> nextStates = Ndfa.GetNextStates("$", state);
 
                 // Looping through the next states and recursivly getting all end states
                 foreach (string s in nextStates)
@@ -560,7 +560,7 @@ namespace FormalMethodsAPI.Back_end.Models
             int index = Database.transStates.IndexOf(begin);
 
             // Looping through the symbols
-            foreach (char s in Ndfa.getAlphabet())
+            foreach (char s in Ndfa.GetAlphabet())
             {
                 List<State> nextStates = new List<State>();
 
@@ -568,7 +568,7 @@ namespace FormalMethodsAPI.Back_end.Models
                 foreach (State state in oldStates)
                 {
                     // Getting the next states
-                    List<string> nextStatesString = Ndfa.getNextStates(s.ToString(), state.name);
+                    List<string> nextStatesString = Ndfa.GetNextStates(s.ToString(), state.name);
 
                     // Looping through the next states
                     foreach (string s2 in nextStatesString)
@@ -601,7 +601,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     foreach (State cState in closureStates)
                     {
                         // Getting next state and adding them to the list
-                        List<string> afterClosure = Ndfa.getNextStates(s.ToString(), cState.name);
+                        List<string> afterClosure = Ndfa.GetNextStates(s.ToString(), cState.name);
                         foreach (string s3 in afterClosure)
                         {
                             State newS = new State(s3, Ndfa);
@@ -624,7 +624,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     Tuple<bool, int> tuple = NewState.ContainsState(Database.transStates, nextStates);
                     if (tuple.Item1)
                     {
-                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.getState(Database.transStates, nextStates));
+                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.GetState(Database.transStates, nextStates));
                     }
                     else
                     {
@@ -642,7 +642,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     foreach (KeyValuePair<char, NewState> k in s.transitions)
                     {
                         Transition t = new Transition(s.name, k.Key.ToString(), k.Value.name);
-                        a.addTransition(t);
+                        a.AddTransition(t);
                     }
 
                     // Defining the final states
@@ -652,7 +652,7 @@ namespace FormalMethodsAPI.Back_end.Models
                         {
                             if (state.name == finalState)
                             {
-                                a.defineAsFinalState(s.name);
+                                a.DefineAsFinalState(s.name);
                             }
                         }
                     }
@@ -660,7 +660,7 @@ namespace FormalMethodsAPI.Back_end.Models
 
             }
             // Defining the start state
-            a.defineAsStartState(Database.transStates[1].name);
+            a.DefineAsStartState(Database.transStates[1].name);
 
             // Adding to the database and returning the index
             Database.Automatas.Add(Database.nextId, a);
@@ -681,12 +681,12 @@ namespace FormalMethodsAPI.Back_end.Models
             Database.nameIndex++;
             Database.transStates.Add(begin);
             int index = Database.transStates.IndexOf(begin);
-            foreach (char s in Ndfa.getAlphabet())
+            foreach (char s in Ndfa.GetAlphabet())
             {
                 List<State> nextStates = new List<State>();
                 foreach (State state in nextStates2)
                 {
-                    List<string> nextStatesString = Ndfa.getNextStates(s.ToString(), state.name);
+                    List<string> nextStatesString = Ndfa.GetNextStates(s.ToString(), state.name);
 
                     foreach (string s2 in nextStatesString)
                     {
@@ -709,7 +709,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     List<State> closureStates = GetEpsilonClosure(state.name, Ndfa);
                     foreach (State cState in closureStates)
                     {
-                        List<string> afterClosure = Ndfa.getNextStates(s.ToString(), cState.name);
+                        List<string> afterClosure = Ndfa.GetNextStates(s.ToString(), cState.name);
                         foreach (string s3 in afterClosure)
                         {
                             State newS = new State(s3, Ndfa);
@@ -731,7 +731,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     Tuple<bool, int> tuple = NewState.ContainsState(Database.transStates, nextStates);
                     if (tuple.Item1)
                     {
-                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.getState(Database.transStates, nextStates));
+                        Database.transStates.ElementAt(index).transitions.Add(s, NewState.GetState(Database.transStates, nextStates));
                     }
                     else
                     {
@@ -764,17 +764,17 @@ namespace FormalMethodsAPI.Back_end.Models
             }
 
             // Adding the sets
-            table.addGroup(finals);
-            table.addGroup(nonFinals);
+            table.AddGroup(finals);
+            table.AddGroup(nonFinals);
 
             // Getting the next equivelance of the current table
-            EquivalenceTable newTable = table.getNextEquivelance(table, dfa, table);
+            EquivalenceTable newTable = table.GetNextEquivelance(table, dfa, table);
 
             // While the tables are not the same, the program keeps looking for the next equivelance
-            while (!table.tablesAreSame(newTable, dfa))
+            while (!table.TablesAreSame(newTable, dfa))
             {
                 table = newTable;
-                newTable = table.getNextEquivelance(table, dfa, table);
+                newTable = table.GetNextEquivelance(table, dfa, table);
             }
 
             // Creating the automata
@@ -782,12 +782,12 @@ namespace FormalMethodsAPI.Back_end.Models
             for (int i = 0; i < newTable.equivelences.Count; i++)
             {
                 // Creating the transitions
-                string fromName = newTable.getListName(i);
+                string fromName = newTable.GetListName(i);
                 foreach (char symbol in dfa.symbols)
                 {
-                    int index = newTable.getListIndex(dfa.getNextStates(symbol.ToString(), newTable.equivelences[i][0])[0]);
-                    string toName = newTable.getListName(index);
-                    newDfa.addTransition(new Transition(fromName, symbol.ToString(), toName));
+                    int index = newTable.GetListIndex(dfa.GetNextStates(symbol.ToString(), newTable.equivelences[i][0])[0]);
+                    string toName = newTable.GetListName(index);
+                    newDfa.AddTransition(new Transition(fromName, symbol.ToString(), toName));
                 }
 
             }
@@ -816,11 +816,11 @@ namespace FormalMethodsAPI.Back_end.Models
             // Adding the start and final states to the automata
             foreach (string s in startStates)
             {
-                newDfa.defineAsStartState(s);
+                newDfa.DefineAsStartState(s);
             }
             foreach (string s in finalStates)
             {
-                newDfa.defineAsFinalState(s);
+                newDfa.DefineAsFinalState(s);
             }
 
             // Adding to the database and returning the index
@@ -828,5 +828,148 @@ namespace FormalMethodsAPI.Back_end.Models
             Database.nextMinimisedId++;
             return Database.nextMinimisedId - 1;
         }
+
+        public static void ConstructNetwork(int id, string start, string contain, string end)
+        {
+            int stateIteration = 0;
+            List<char> symbols = new List<char>();
+            foreach (char c in start)
+            {
+                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
+                {
+                    symbols.Add(c);
+                }
+            }
+            foreach (char c in contain)
+            {
+                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
+                {
+                    symbols.Add(c);
+                }
+            }
+            foreach (char c in end)
+            {
+                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
+                {
+                    symbols.Add(c);
+                }
+            }
+            Automata network = new Automata(symbols.ToArray());
+            string currentState = GetNextState(stateIteration);
+            if (!(start == "-"))
+            {
+                network.DefineAsStartState(GetNextState(stateIteration));
+                for (int i = 0; i < start.Length; i++)
+                {
+                    stateIteration++;
+                    network.AddState(GetNextState(stateIteration));
+                    network.AddTransition(new Transition(currentState, start[i].ToString(), GetNextState(stateIteration)));
+                    currentState = GetNextState(stateIteration);
+                }
+                stateIteration++;
+            }
+            if (!(contain == "-"))
+            {
+                for (int i = 0; i < contain.Length; i++)
+                {
+
+                    network.AddState(GetNextState(stateIteration));
+                    network.AddTransition(new Transition(currentState, contain[i].ToString(), GetNextState(stateIteration)));
+                    currentState = GetNextState(stateIteration);
+                    stateIteration++;
+                }
+            }
+
+            if (!(end == "-"))
+            {
+                for (int i = 0; i < end.Length; i++)
+                {
+                    network.AddState(GetNextState(stateIteration));
+                    network.AddTransition(new Transition(currentState, end[i].ToString(), GetNextState(stateIteration)));
+                    currentState = GetNextState(stateIteration);
+                    stateIteration++;
+                }
+                network.DefineAsFinalState(currentState);
+            }
+
+
+            Database.GetAutomatas();
+            Database.Automatas.Add(id, network);
+        }
+
+        public static string GetNextState(int iteration)
+        {
+            List<string> states = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H" };
+            return states[iteration];
+        }
+
+        public static bool CheckWord(int id, string word)
+        {
+            // Initializing variables
+            Automata automata = Database.Automatas[id];
+            List<string> nextStates = new List<string>();
+            List<string> tempStates = new List<string>();
+
+            // Getting the next states
+            foreach (string state in automata.startStates)
+            {
+                nextStates = nextStates.Concat(automata.GetNextStates(word[0].ToString(), state)).ToList();
+            }
+            if (nextStates.Count == 0)
+            {
+                return false;
+            }
+            if(word.Length == 1)
+            {
+                foreach (string state in automata.finalStates)
+                {
+                    if (nextStates.Contains(state))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            for (int i = 1; i < word.Length; i++)
+            {
+                foreach (string state in nextStates)
+                {
+                    tempStates = tempStates.Concat(automata.GetNextStates(word[i].ToString(), state)).ToList();
+                }
+                if (tempStates.Count == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    nextStates = tempStates;
+                    tempStates = new List<string>();
+                    if (i == word.Length - 1)
+                    {
+                        if (automata.finalStates.Count != 0)
+                        {
+                            foreach (string state in automata.finalStates)
+                            {
+                                if (nextStates.Contains(state))
+                                {
+                                    return true;
+                                }
+                                
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            return true;
+                        }
+
+                    }
+                }
+            }
+            return true;
+
+        }
+
+
     }
 }

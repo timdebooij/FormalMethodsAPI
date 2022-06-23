@@ -21,7 +21,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Function to parse a NDFA to Regular Grammar
         /// </summary>
         /// <param name="automata"></param>
-        public void generateGrammar(Automata automata)
+        public void GenerateGrammar(Automata automata)
         {
             // Variables for the first line of grammar
             string firstStatement = automata.startStates.ElementAt(0) + " -->";
@@ -29,15 +29,15 @@ namespace FormalMethodsAPI.Back_end.Models
             foreach(Transition transition in automata.transitions)
             {
                 // Checking for the start state
-                if(transition.getFromState() == automata.startStates.ElementAt(0))
+                if(transition.GetFromState() == automata.startStates.ElementAt(0))
                 {
                     // Adding the transition to the grammar line
-                    firstStatement = firstStatement + " " + transition.getSymbol() + transition.getToState() + " |";
+                    firstStatement = firstStatement + " " + transition.GetSymbol() + transition.GetToState() + " |";
 
                     // Checking if the transition goes to the final state
-                    if (automata.finalStates.Contains(transition.getToState()))
+                    if (automata.finalStates.Contains(transition.GetToState()))
                     {
-                        end = end + " " + transition.getSymbol() + " |";
+                        end = end + " " + transition.GetSymbol() + " |";
                     }
                 }
                 
@@ -64,15 +64,15 @@ namespace FormalMethodsAPI.Back_end.Models
                     foreach (Transition transition in automata.transitions)
                     {
                         // Checking if the transition goes from the state
-                        if (transition.getFromState() == state)
+                        if (transition.GetFromState() == state)
                         {
                             // Adding the transition to the grammar line
-                            statement = statement + " " + transition.getSymbol() + transition.getToState() + " |";
+                            statement = statement + " " + transition.GetSymbol() + transition.GetToState() + " |";
 
                             // Checking if the transition goes to the final state
-                            if (automata.finalStates.Contains(transition.getToState()))
+                            if (automata.finalStates.Contains(transition.GetToState()))
                             {
-                                end2 = end2 + transition.getSymbol();
+                                end2 = end2 + transition.GetSymbol();
                             }
                         }
 

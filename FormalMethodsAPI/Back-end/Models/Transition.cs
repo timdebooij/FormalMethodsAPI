@@ -32,17 +32,17 @@ namespace FormalMethodsAPI.Back_end.Models
         }
 
 
-        public string getFromState()
+        public string GetFromState()
         {
             return fromState;
         }
 
-        public string getToState()
+        public string GetToState()
         {
             return toState;
         }
 
-        public string getSymbol()
+        public string GetSymbol()
         {
             return symbol;
         }

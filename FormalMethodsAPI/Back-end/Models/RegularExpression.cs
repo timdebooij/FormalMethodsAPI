@@ -69,7 +69,7 @@ namespace FormalMethodsAPI.Back_end
             return result;
         }
 
-        public SortedSet<string> getLanguage(int maxSteps)
+        public SortedSet<string> GetLanguage(int maxSteps)
         {
             SortedSet<string> emptyLanguage = new SortedSet<string>();
             SortedSet<string> languageResult = new SortedSet<string>();
@@ -87,7 +87,7 @@ namespace FormalMethodsAPI.Back_end
                 case Operator.OR:
                     if(left != null)
                     {
-                        languageLeft = left.getLanguage(maxSteps -1);
+                        languageLeft = left.GetLanguage(maxSteps -1);
                         foreach(string s in languageLeft)
                         {
                             languageResult.Add(s);
@@ -95,7 +95,7 @@ namespace FormalMethodsAPI.Back_end
                     }
                     if(right != null)
                     {
-                        languageRight = right.getLanguage(maxSteps -1);
+                        languageRight = right.GetLanguage(maxSteps -1);
                         foreach (string s in languageRight)
                         {
                             languageResult.Add(s);
@@ -104,8 +104,8 @@ namespace FormalMethodsAPI.Back_end
                     break;
 
                 case Operator.DOT:
-                    languageLeft = left == null ? emptyLanguage : left.getLanguage(maxSteps -1);
-                    languageRight = right == null ? emptyLanguage : right.getLanguage(maxSteps -1);
+                    languageLeft = left == null ? emptyLanguage : left.GetLanguage(maxSteps -1);
+                    languageRight = right == null ? emptyLanguage : right.GetLanguage(maxSteps -1);
                     foreach(string s1 in languageLeft)
                         foreach(string s2 in languageRight)
                         {
@@ -115,7 +115,7 @@ namespace FormalMethodsAPI.Back_end
 
                 case Operator.STAR:
                 case Operator.PLUS:
-                    languageLeft = left == null ? emptyLanguage : left.getLanguage(maxSteps -1);
+                    languageLeft = left == null ? emptyLanguage : left.GetLanguage(maxSteps -1);
                     foreach (string s in languageLeft)
                     {
                         languageResult.Add(s);
@@ -145,7 +145,7 @@ namespace FormalMethodsAPI.Back_end
 
         
 
-        public static List<string> getAlphabet(string expression)
+        public static List<string> GetAlphabet(string expression)
         {
             List<string> returnList = new List<string>();
             string onlyLetters = new String(expression.Where(Char.IsLetter).ToArray());
@@ -159,7 +159,7 @@ namespace FormalMethodsAPI.Back_end
             return returnList;
         }
 
-        public static List<char> getCharAlphabet(string expression)
+        public static List<char> GetCharAlphabet(string expression)
         {
             List<char> returnList = new List<char>();
             string onlyLetters = new String(expression.Where(Char.IsLetter).ToArray());
@@ -371,9 +371,9 @@ namespace FormalMethodsAPI.Back_end
                 string state0 = lastState;
                 string state1 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addTransition(new Transition(state0, c, state1));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddTransition(new Transition(state0, c, state1));
                 
             }
             else
@@ -382,9 +382,9 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state1 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addTransition(new Transition(state0, c, state1));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddTransition(new Transition(state0, c, state1));
             }
             return Tuple.Create(automata, "q" + (Database.nextName -1));
         }
@@ -400,14 +400,14 @@ namespace FormalMethodsAPI.Back_end
                 string state2 = "q" + Database.nextName;
                 Database.nextName++;
                 string state3 = "q" + Database.nextName;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
             }
             else
             {
@@ -419,14 +419,14 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
                 
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -441,20 +441,20 @@ namespace FormalMethodsAPI.Back_end
                 string state2 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
                 foreach (Transition t in auto2.transitions)
                 {
-                    automata.addTransition(t);
+                    automata.AddTransition(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             else
@@ -465,20 +465,20 @@ namespace FormalMethodsAPI.Back_end
                 string state2 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
                 foreach (Transition t in auto2.transitions)
                 {
-                    automata.addTransition(t);
+                    automata.AddTransition(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -493,21 +493,21 @@ namespace FormalMethodsAPI.Back_end
                 string state2 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
-                automata.addTransition(new Transition(state0, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
+                automata.AddTransition(new Transition(state0, "$", state3));
                 foreach (Transition t in auto2.transitions)
                 {
-                    automata.addTransition(t);
+                    automata.AddTransition(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             else
@@ -518,21 +518,21 @@ namespace FormalMethodsAPI.Back_end
                 string state2 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
-                automata.addTransition(new Transition(state0, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
+                automata.AddTransition(new Transition(state0, "$", state3));
                 foreach (Transition t in auto2.transitions)
                 {
-                    automata.addTransition(t);
+                    automata.AddTransition(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -549,15 +549,15 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
-                automata.addTransition(new Transition(state0, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
+                automata.AddTransition(new Transition(state0, "$", state3));
             }
             else
             {
@@ -569,15 +569,15 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state3 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state3));
-                automata.addTransition(new Transition(state0, "$", state3));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state3));
+                automata.AddTransition(new Transition(state0, "$", state3));
 
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -594,16 +594,16 @@ namespace FormalMethodsAPI.Back_end
                 string state4 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
                 foreach(Transition t in auto1.transitions)
                 {
                     automata.transitions.Add(t);
@@ -614,11 +614,11 @@ namespace FormalMethodsAPI.Back_end
                 }
                 foreach (string state in auto1.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             else
@@ -631,16 +631,16 @@ namespace FormalMethodsAPI.Back_end
                 string state4 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
                 foreach (Transition t in auto1.transitions)
                 {
                     automata.transitions.Add(t);
@@ -651,11 +651,11 @@ namespace FormalMethodsAPI.Back_end
                 }
                 foreach (string state in auto1.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -674,24 +674,24 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
-                automata.addTransition(new Transition(state3, d, state4));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
+                automata.AddTransition(new Transition(state3, d, state4));
                 foreach (Transition t in auto1.transitions)
                 {
                     automata.transitions.Add(t);
                 }
                 foreach (string state in auto1.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             else
@@ -706,24 +706,24 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
-                automata.addTransition(new Transition(state3, d, state4));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
+                automata.AddTransition(new Transition(state3, d, state4));
                 foreach (Transition t in auto1.transitions)
                 {
                     automata.transitions.Add(t);
                 }
                 foreach(string state in auto1.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -742,24 +742,24 @@ namespace FormalMethodsAPI.Back_end
                 string state4 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
-                automata.addTransition(new Transition(state1, c, state2));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
+                automata.AddTransition(new Transition(state1, c, state2));
                 foreach (Transition t in auto2.transitions)
                 {
                     automata.transitions.Add(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             else
@@ -774,24 +774,24 @@ namespace FormalMethodsAPI.Back_end
                 string state4 = GetHighest(auto2.states.ToList());//auto2.states.Last();
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state4, "$", state5));
-                automata.addTransition(new Transition(state1, c, state2));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state4, "$", state5));
+                automata.AddTransition(new Transition(state1, c, state2));
                 foreach (Transition t in auto2.transitions)
                 {
                     automata.transitions.Add(t);
                 }
                 foreach (string state in auto2.states)
                 {
-                    automata.addState(state);
+                    automata.AddState(state);
                 }
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));
@@ -812,18 +812,18 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state3, d, state4));
-                automata.addTransition(new Transition(state4, "$", state5));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state3, d, state4));
+                automata.AddTransition(new Transition(state4, "$", state5));
             }
             else
             {
@@ -839,18 +839,18 @@ namespace FormalMethodsAPI.Back_end
                 Database.nextName++;
                 string state5 = "q" + Database.nextName;
                 Database.nextName++;
-                automata.addState(state0);
-                automata.addState(state1);
-                automata.addState(state2);
-                automata.addState(state3);
-                automata.addState(state4);
-                automata.addState(state5);
-                automata.addTransition(new Transition(state0, "$", state1));
-                automata.addTransition(new Transition(state1, c, state2));
-                automata.addTransition(new Transition(state2, "$", state5));
-                automata.addTransition(new Transition(state0, "$", state3));
-                automata.addTransition(new Transition(state3, d, state4));
-                automata.addTransition(new Transition(state4, "$", state5));
+                automata.AddState(state0);
+                automata.AddState(state1);
+                automata.AddState(state2);
+                automata.AddState(state3);
+                automata.AddState(state4);
+                automata.AddState(state5);
+                automata.AddTransition(new Transition(state0, "$", state1));
+                automata.AddTransition(new Transition(state1, c, state2));
+                automata.AddTransition(new Transition(state2, "$", state5));
+                automata.AddTransition(new Transition(state0, "$", state3));
+                automata.AddTransition(new Transition(state3, d, state4));
+                automata.AddTransition(new Transition(state4, "$", state5));
 
             }
             return Tuple.Create(automata, "q" + (Database.nextName - 1));

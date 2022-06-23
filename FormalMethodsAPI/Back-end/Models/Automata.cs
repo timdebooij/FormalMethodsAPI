@@ -32,14 +32,14 @@ namespace FormalMethodsAPI.Back_end.Models
             states = new SortedSet<string>();
             startStates = new SortedSet<string>();
             finalStates = new SortedSet<string>();
-            this.setAlphabet(symbols);
+            this.SetAlphabet(symbols);
         }
 
         /// <summary>
         /// Setter for alphabet/putting the symbols
         /// </summary>
         /// <param name="symbols">The symbols used in the automata</param>
-        public void setAlphabet(char[] symbols)
+        public void SetAlphabet(char[] symbols)
         {
             this.symbols = symbols;
         }
@@ -48,7 +48,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Getter for the Alphabet
         /// </summary>
         /// <returns>The current alphabet from the automata</returns>
-        public char[] getAlphabet()
+        public char[] GetAlphabet()
         {
             return symbols;
         }
@@ -57,19 +57,19 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Adds a transition to the automata
         /// </summary>
         /// <param name="t"> The transition to add</param>
-        public void addTransition(Transition t)
+        public void AddTransition(Transition t)
         {
             transitions.Count();
             transitions.Add(t);
-            states.Add(t.getFromState());
-            states.Add(t.getToState());
+            states.Add(t.GetFromState());
+            states.Add(t.GetToState());
         }
 
         /// <summary>
         /// Adds a single state to the automata
         /// </summary>
         /// <param name="state"> The state to add</param>
-        public void addState(string state)
+        public void AddState(string state)
         {
             states.Add(state);
         }
@@ -78,7 +78,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Defines a state within the automata to be a start state
         /// </summary>
         /// <param name="t"> The state to define</param>
-        public void defineAsStartState(string t)
+        public void DefineAsStartState(string t)
         {
             states.Add(t);
             startStates.Add(t);
@@ -88,7 +88,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Defines a state within the automata to be a final/end state
         /// </summary>
         /// <param name="t"> The state to define</param>
-        public void defineAsFinalState(string t)
+        public void DefineAsFinalState(string t)
         {
             // if already in states no problem because a Set will remove duplicates.
             states.Add(t);
@@ -99,7 +99,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Checks the automata to validate if it is a DFA
         /// </summary>
         /// <returns> True in case of DFA and False in case of NDFA</returns>
-        public bool isDFA()
+        public bool IsDFA()
         {
             // return variable
             bool isDFA = true;
@@ -114,7 +114,7 @@ namespace FormalMethodsAPI.Back_end.Models
                     foreach (Transition transition in this.transitions)
                     {
                         // Checks if the transition starts from the current state with the current symbol
-                        if (transition.getFromState() == from && transition.getSymbol() == symbol.ToString())
+                        if (transition.GetFromState() == from && transition.GetSymbol() == symbol.ToString())
                         {
                             counter++;
                         }
@@ -131,7 +131,7 @@ namespace FormalMethodsAPI.Back_end.Models
             // checking all the transitions for epsilon, since DFA's cannot have epsilon transitions.
             foreach(Transition t in transitions)
             {
-                if(t.getSymbol() == "$")
+                if(t.GetSymbol() == "$")
                 {
                     isDFA = false;
                 }
@@ -146,7 +146,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// <param name="letter"> The input</param>
         /// <param name="beginState"> The current state</param>
         /// <returns> The next states after the input was given</returns>
-        public List<string> getNextStates(string letter, string beginState)
+        public List<string> GetNextStates(string letter, string beginState)
         {
             // Return variable, which is a list for the fact that in a NDFA there could be multiple nextstates
             List<string> nextStates = new List<string>();
@@ -155,9 +155,9 @@ namespace FormalMethodsAPI.Back_end.Models
             foreach (Transition transition in transitions)
             {
                 // Checking if the transition goes from the beginState with the input letter, if so the toState will be one of the next states
-                if (transition.getFromState() == beginState && transition.getSymbol() == letter)
+                if (transition.GetFromState() == beginState && transition.GetSymbol() == letter)
                 {
-                    nextStates.Add(transition.getToState());
+                    nextStates.Add(transition.GetToState());
                 }
             }
             return nextStates;

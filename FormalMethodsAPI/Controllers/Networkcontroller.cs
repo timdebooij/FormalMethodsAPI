@@ -20,8 +20,8 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet]
         public string Get(string input)
         {
-            Automata m = AutomataHelper.getExampleSlide14Lesson2();
-            Network network = AutomataHelper.getVisNodes(0, m);
+            Automata m = AutomataHelper.GetExampleSlide14Lesson2();
+            Network network = AutomataHelper.GetVisNodes(0, m);
             var jsonBoth = JsonConvert.SerializeObject(network);
             return jsonBoth;
         }
@@ -43,24 +43,24 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("id")]
         public string GetIds()
         {
-            Database.getAutomatas();
-            Network network = new Network(0, null, null, null, null, 300, "", Database.getIds(), false);
+            Database.GetAutomatas();
+            Network network = new Network(0, null, null, null, null, 300, "", Database.GetIds(), false);
             return JsonConvert.SerializeObject(network);
         }
 
         [HttpGet("dfaId")]
         public string GetDfaIds()
         {
-            Database.getAutomatas();
-            Network network = new Network(0, null, null, null, null, 300, "", Database.getDfaIds(), false);
+            Database.GetAutomatas();
+            Network network = new Network(0, null, null, null, null, 300, "", Database.GetDfaIds(), false);
             return JsonConvert.SerializeObject(network);
         }
 
         [HttpGet("ndfaId")]
         public string GetNDfaIds()
         {
-            Database.getAutomatas();
-            Network network = new Network(0, null, null, null, null, 300, "", Database.getNdfaIds(), false);
+            Database.GetAutomatas();
+            Network network = new Network(0, null, null, null, null, 300, "", Database.GetNdfaIds(), false);
             return JsonConvert.SerializeObject(network);
         }
 
@@ -73,7 +73,7 @@ namespace FormalMethodsAPI.Controllers
             }
             else if(string.Equals(alphabet, "-"))
             {
-                Network network = new Network(0, null, null, null, null, 406, "Fill in the alphabet for the new network", Database.getIds(), false);
+                Network network = new Network(0, null, null, null, null, 406, "Fill in the alphabet for the new network", Database.GetIds(), false);
                 return JsonConvert.SerializeObject(network);
             }
             else
@@ -97,7 +97,7 @@ namespace FormalMethodsAPI.Controllers
             }
             if (Database.Automatas.ContainsKey(id))
             {
-                Database.Automatas[id].addState(state);
+                Database.Automatas[id].AddState(state);
                 return GetNetworkString(id);
             }
             else
@@ -120,7 +120,7 @@ namespace FormalMethodsAPI.Controllers
             else
             {
                 Transition t = new Transition(from, symbol, to);
-                Database.Automatas[id].addTransition(t);
+                Database.Automatas[id].AddTransition(t);
                 return GetNetworkString(id);
             }
         }
@@ -130,7 +130,7 @@ namespace FormalMethodsAPI.Controllers
         {
             if (Database.Automatas.ContainsKey(id))
             {
-                Database.Automatas[id].defineAsStartState(state);
+                Database.Automatas[id].DefineAsStartState(state);
                 return GetNetworkString(id);
             }
             else
@@ -144,7 +144,7 @@ namespace FormalMethodsAPI.Controllers
         {
             if (Database.Automatas.ContainsKey(id))
             {
-                Database.Automatas[id].defineAsFinalState(state);
+                Database.Automatas[id].DefineAsFinalState(state);
                 return GetNetworkString(id);
             }
             else
@@ -210,7 +210,7 @@ namespace FormalMethodsAPI.Controllers
                 if (Database.Automatas.ContainsKey(id))
                 {
                     Grammar grammar = new Grammar();
-                    grammar.generateGrammar(Database.Automatas[id]);
+                    grammar.GenerateGrammar(Database.Automatas[id]);
                     return JsonConvert.SerializeObject(grammar);
                 }
                 else
@@ -234,70 +234,7 @@ namespace FormalMethodsAPI.Controllers
             {
                 return GetErrorString(406, "Given key already exists");
             }
-            int stateIteration = 0;
-            List<char> symbols = new List<char>();
-            foreach (char c in start)
-            {
-                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
-                {
-                    symbols.Add(c);
-                }
-            }
-            foreach (char c in contain)
-            {
-                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
-                {
-                    symbols.Add(c);
-                }
-            }
-            foreach (char c in end)
-            {
-                if (!(c == ' ' || c == '-' || symbols.Contains(c)))
-                {
-                    symbols.Add(c);
-                }
-            }
-            Automata network = new Automata(symbols.ToArray());
-            string currentState = GetNextState(stateIteration);
-            if (!(start == "-"))
-            {
-                network.defineAsStartState(GetNextState(stateIteration));
-                for (int i = 0; i < start.Length; i++)
-                {
-                    stateIteration++;
-                    network.addState(GetNextState(stateIteration));
-                    network.addTransition(new Transition(currentState, start[i].ToString(), GetNextState(stateIteration)));
-                    currentState = GetNextState(stateIteration);
-                }
-                stateIteration++;
-            }
-            if(!(contain == "-"))
-            {
-                for (int i = 0; i < contain.Length; i++)
-                {
-
-                    network.addState(GetNextState(stateIteration));
-                    network.addTransition(new Transition(currentState, contain[i].ToString(), GetNextState(stateIteration)));
-                    currentState = GetNextState(stateIteration);
-                    stateIteration++;
-                }
-            }
-            
-            if(!(end == "-"))
-            {
-                for (int i = 0; i < end.Length; i++)
-                {
-                    network.addState(GetNextState(stateIteration));
-                    network.addTransition(new Transition(currentState, end[i].ToString(), GetNextState(stateIteration)));
-                    currentState = GetNextState(stateIteration);
-                    stateIteration++;
-                }
-                network.defineAsFinalState(currentState);
-            }
-            
-            
-            Database.getAutomatas();
-            Database.Automatas.Add(id, network);
+            AutomataHelper.ConstructNetwork(id, start, contain, end);
             return GetNetworkString(id);
         }
 
@@ -311,55 +248,8 @@ namespace FormalMethodsAPI.Controllers
                 {
                     if (automata.startStates.Count != 0)
                     {
-                        List<string> nextStates = new List<string>();
-                        List<string> tempStates = new List<string>();
-                        foreach (string state in automata.startStates)
-                        {
-                            nextStates = nextStates.Concat(automata.getNextStates(word[0].ToString(), state)).ToList();
-                        }
-                        if(nextStates.Count == 0)
-                        {
-                            return getWordString(word, false);
-                        }
-                        for(int i = 1; i < word.Length; i++)
-                        {
-                            foreach(string state in nextStates)
-                            {
-                                tempStates = tempStates.Concat(automata.getNextStates(word[i].ToString(), state)).ToList();
-                            }
-                            if (tempStates.Count == 0)
-                            {
-                                return getWordString(word, false);
-                            }
-                            else
-                            {
-                                nextStates = tempStates;
-                                tempStates = new List<string>();
-                                if(i == word.Length - 1)
-                                {
-                                    if(automata.finalStates.Count != 0)
-                                    {
-                                        foreach (string state in automata.finalStates)
-                                        {
-                                            if (nextStates.Contains(state))
-                                            {
-                                                return getWordString(word, true);
-                                            }
-                                            else
-                                            {
-                                                return getWordString(word, false);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        return getWordString(word, true);
-                                    }
-                                    
-                                }
-                            }
-                        }
-                        return getWordString(word, true);
+                        bool result = AutomataHelper.CheckWord(id, word);
+                        return getWordString(word, result);
                     }
                     else
                     {
@@ -381,7 +271,7 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("concat/{id1}/{id2}")]
         public string ConcatDfa(int id1, int id2)
         {
-            Database.getAutomatas();
+            Database.GetAutomatas();
             if(id1 == -999 || id2 == -999)
             {
                 return GetErrorString(400, "First load the DFA's before performing the operation");
@@ -402,7 +292,7 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("union/{id1}/{id2}")]
         public string UnionDfa(int id1, int id2)
         {
-            Database.getAutomatas();
+            Database.GetAutomatas();
             if (id1 == -999 || id2 == -999)
             {
                 return GetErrorString(400, "First load the DFA's before performing the operation");
@@ -423,7 +313,7 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("comp/{id}")]
         public string ComplementDfa(int id)
         {
-            Database.getAutomatas();
+            Database.GetAutomatas();
             if (id == -999)
             {
                 return GetErrorString(400, "First load the DFA before performing the operation");
@@ -445,7 +335,7 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("thompson/{input}")]
         public string Thompson(string input)
         {
-            Database.getAutomatas();
+            Database.GetAutomatas();
             if (input == "-")
             {
                 return GetErrorString(404, "False data");
@@ -453,11 +343,11 @@ namespace FormalMethodsAPI.Controllers
             else
             {
                 input = input.Replace('@', '+');
-                RegularExpression exp = RegularExpressionHelper.generate(input);
-                Automata a = new Automata(RegularExpression.getCharAlphabet(input).ToArray());
+                RegularExpression exp = RegularExpressionHelper.Generate(input);
+                Automata a = new Automata(RegularExpression.GetCharAlphabet(input).ToArray());
                 Tuple<Automata, string> tuple = RegularExpression.GetNdfa(exp, a, null);
-                tuple.Item1.defineAsStartState(RegularExpression.GetLowest(tuple.Item1.states.ToList()));
-                tuple.Item1.defineAsFinalState(RegularExpression.GetHighest(tuple.Item1.states.ToList()));
+                tuple.Item1.DefineAsStartState(RegularExpression.GetLowest(tuple.Item1.states.ToList()));
+                tuple.Item1.DefineAsFinalState(RegularExpression.GetHighest(tuple.Item1.states.ToList()));
                 Database.Automatas.Add(Database.nextId, tuple.Item1);
                 int index = Database.nextId;
                 Database.nextId++;
@@ -471,7 +361,7 @@ namespace FormalMethodsAPI.Controllers
         [HttpGet("dfalanguage/{id}")]
         public string DFALanguage(int id)
         {
-            Database.getAutomatas();
+            Database.GetAutomatas();
             if (Database.Automatas.ContainsKey(id))
             {
                 RegExpData data = new RegExpData();
@@ -484,15 +374,9 @@ namespace FormalMethodsAPI.Controllers
             }
         }
 
-        public static string GetNextState(int iteration)
-        {
-            List<string> states = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H" };
-            return states[iteration];
-        }
-
         public string GetNetworkString(int id, int status = 200, string errorMessage = "")
         {
-            Network network = AutomataHelper.getVisNodes(id, Database.Automatas[id]);
+            Network network = AutomataHelper.GetVisNodes(id, Database.Automatas[id]);
             network.status = status;
             network.errorMessage = errorMessage;
             return JsonConvert.SerializeObject(network);
@@ -500,7 +384,7 @@ namespace FormalMethodsAPI.Controllers
 
         public string GetErrorString(int status, string error)
         {
-            Network network = new Network(0, null, null, null, null, status, error, Database.getIds(), false);
+            Network network = new Network(0, null, null, null, null, status, error, Database.GetIds(), false);
             return JsonConvert.SerializeObject(network);
         }
 

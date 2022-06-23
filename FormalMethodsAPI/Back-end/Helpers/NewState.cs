@@ -127,7 +127,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// <param name="newStates"> The Newstates</param>
         /// <param name="states"> The states to check</param>
         /// <returns> The NewState that contains the list</returns>
-        static public NewState getState(List<NewState> newStates, List<State> states)
+        static public NewState GetState(List<NewState> newStates, List<State> states)
         {
             List<State> clone = new List<State>(states);
             foreach (NewState n in newStates)

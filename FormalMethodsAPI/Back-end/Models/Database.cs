@@ -24,7 +24,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Gets all the id's from the automatas
         /// </summary>
         /// <returns> The list with id's</returns>
-        public static List<int> getIds()
+        public static List<int> GetIds()
         {
             List<int> ids = new List<int>();
             foreach(KeyValuePair<int, Automata> keyValue in Automatas)
@@ -40,7 +40,7 @@ namespace FormalMethodsAPI.Back_end.Models
         public static void ResetDatabase()
         {
             Automatas = new Dictionary<int, Automata>();
-            getAutomatas();
+            GetAutomatas();
             name = 0;
             newStates = new List<NewState>();
             transStates = new List<NewState>();
@@ -55,12 +55,12 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Getting the id's of the automatas that are a DFA
         /// </summary>
         /// <returns> List of id's</returns>
-        public static List<int> getDfaIds()
+        public static List<int> GetDfaIds()
         {
             List<int> ids = new List<int>();
             foreach (KeyValuePair<int, Automata> keyValue in Automatas)
             {
-                if (keyValue.Value.isDFA())
+                if (keyValue.Value.IsDFA())
                 {
                     ids.Add(keyValue.Key);
                 }
@@ -72,12 +72,12 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Getting the id's of the automatas that are a NDFA
         /// </summary>
         /// <returns> List of id's</returns>
-        public static List<int> getNdfaIds()
+        public static List<int> GetNdfaIds()
         {
             List<int> ids = new List<int>();
             foreach (KeyValuePair<int, Automata> keyValue in Automatas)
             {
-                if (!keyValue.Value.isDFA())
+                if (!keyValue.Value.IsDFA())
                 {
                     ids.Add(keyValue.Key);
                 }
@@ -89,7 +89,7 @@ namespace FormalMethodsAPI.Back_end.Models
         /// Seeding the database with hardcoded automatas
         /// </summary>
         /// <returns> The created automatas</returns>
-        public static Dictionary<int, Automata> getAutomatas()
+        public static Dictionary<int, Automata> GetAutomatas()
         {
             // Checking if the database is empty
             if(Database.Automatas.Count == 0)
@@ -221,29 +221,29 @@ namespace FormalMethodsAPI.Back_end.Models
 
                 char[] alphabet = { 'a', 'b', 'c' };
                 Automata m = new Automata(alphabet);
-                m.addTransition(new Transition("q0", "a", "q0"));
-                m.addTransition(new Transition("q0", "q1"));
-                m.addTransition(new Transition("q1", "b", "q1"));
-                m.addTransition(new Transition("q1", "q2"));
-                m.addTransition(new Transition("q2", "c", "q2"));
-                m.defineAsStartState("q0");
-                m.defineAsFinalState("q2");
+                m.AddTransition(new Transition("q0", "a", "q0"));
+                m.AddTransition(new Transition("q0", "q1"));
+                m.AddTransition(new Transition("q1", "b", "q1"));
+                m.AddTransition(new Transition("q1", "q2"));
+                m.AddTransition(new Transition("q2", "c", "q2"));
+                m.DefineAsStartState("q0");
+                m.DefineAsFinalState("q2");
                 Database.Automatas.Add(106, m);
 
                 char[] alphabet1 = { 'a', 'b'};
                 Automata m1 = new Automata(alphabet1);
-                m1.addTransition(new Transition("A", "a", "B"));
-                m1.addTransition(new Transition("A", "b", "C"));
-                m1.addTransition(new Transition("B", "a", "B"));
-                m1.addTransition(new Transition("B", "b", "D"));
-                m1.addTransition(new Transition("C", "a", "B"));
-                m1.addTransition(new Transition("C", "b", "C"));
-                m1.addTransition(new Transition("D", "a", "B"));
-                m1.addTransition(new Transition("D", "b", "E"));
-                m1.addTransition(new Transition("E", "a", "B"));
-                m1.addTransition(new Transition("E", "b", "C"));
-                m1.defineAsStartState("A");
-                m1.defineAsFinalState("E");
+                m1.AddTransition(new Transition("A", "a", "B"));
+                m1.AddTransition(new Transition("A", "b", "C"));
+                m1.AddTransition(new Transition("B", "a", "B"));
+                m1.AddTransition(new Transition("B", "b", "D"));
+                m1.AddTransition(new Transition("C", "a", "B"));
+                m1.AddTransition(new Transition("C", "b", "C"));
+                m1.AddTransition(new Transition("D", "a", "B"));
+                m1.AddTransition(new Transition("D", "b", "E"));
+                m1.AddTransition(new Transition("E", "a", "B"));
+                m1.AddTransition(new Transition("E", "b", "C"));
+                m1.DefineAsStartState("A");
+                m1.DefineAsFinalState("E");
                 Database.Automatas.Add(107, m1);
             }
             return Database.Automatas;

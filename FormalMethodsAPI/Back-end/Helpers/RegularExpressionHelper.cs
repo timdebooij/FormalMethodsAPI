@@ -8,7 +8,7 @@ namespace FormalMethodsAPI.Back_end.Helpers
 {
     public class RegularExpressionHelper
     {
-        public static RegularExpression generate(string input)
+        public static RegularExpression Generate(string input)
         {
             input = Regex.Replace(input, @"\s+", "");
             List<RegularExpression> expressions = new List<RegularExpression>();
@@ -82,18 +82,18 @@ namespace FormalMethodsAPI.Back_end.Helpers
             return returnValue;
         }
 
-        public static List<string> seperateStarPlus(List<string> conjoinedArray)
+        public static List<string> SeperateStarPlus(List<string> conjoinedArray)
         {
             List<string> seperatedArray = new List<string>();
             foreach (string z in conjoinedArray)
             {
                 if (z.Contains('*'))
                 {
-                    seperatedArray = seperatedArray.Concat(splitOperator(z, "(\\*)")).ToList();
+                    seperatedArray = seperatedArray.Concat(SplitOperator(z, "(\\*)")).ToList();
                 }
                 else if (z.Contains('+'))
                 {
-                    seperatedArray = seperatedArray.Concat(splitOperator(z, "(\\+)")).ToList();
+                    seperatedArray = seperatedArray.Concat(SplitOperator(z, "(\\+)")).ToList();
                 }
                 else
                 {
@@ -103,7 +103,7 @@ namespace FormalMethodsAPI.Back_end.Helpers
             return seperatedArray;
         }
 
-        public static List<string> splitOperator(string input, string oper)
+        public static List<string> SplitOperator(string input, string oper)
         {
             var regEx = new Regex(oper);
             string[] substrings = regEx.Split(input);
@@ -120,7 +120,7 @@ namespace FormalMethodsAPI.Back_end.Helpers
 
         public static List<string> GetRandomWord(RegularExpression expression, List<string> alphabet)
         {
-            List<string> language = expression.getLanguage(6).ToList();
+            List<string> language = expression.GetLanguage(6).ToList();
             List<string> nonLanguage = new List<string>(0);
             string word = "";
             string tempWord = "";
